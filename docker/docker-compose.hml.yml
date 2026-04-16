@@ -1,0 +1,30 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: aisle_vision_api_hml
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: staging
+      DATABASE_URL: postgresql://aislevision:Dejavu1985@db:5432/avdb_hml
+    command: node dist/main
+
+  db:
+    image: postgres:16
+    container_name: aisle_vision_db_hml
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: aislevision
+      POSTGRES_PASSWORD: Dejavu1985
+      POSTGRES_DB: avdb_hml
+    volumes:
+      - pgdata_hml:/var/lib/postgresql/data
+
+volumes:
+  pgdata_hml:
