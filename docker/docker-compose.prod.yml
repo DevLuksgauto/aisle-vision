@@ -1,24 +1,26 @@
+name: aisle_vision
 services:
-    api:
+    aisle-vision-bff:
         build:
             context: ..
             dockerfile: Dockerfile
-        container_name: aisle_vision_api
+        image: aisle_vision_api:latest
+        container_name: aisle_vision_api_prod
         ports:
             - "80:3000"
         depends_on:
-            - db
+            - aisle-vision-db
         environment:
             NODE_ENV: production
             DATABASE_URL: postgresql://aislevision:Dejavu1985@5432/avdb_prod
         command: node dist/main
 
-    db:
+    aisle-vision-db:
         image: postgres:16
         container_name: aisle_vision_db_prod
         restart: always
         ports:
-            - "5432:5432"
+            - "5434:5432"
         environment:
             POSTGRES_USER: aislevision
             POSTGRES_PASSWORD: Dejavu1985

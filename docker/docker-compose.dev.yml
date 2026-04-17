@@ -1,24 +1,27 @@
+name: aisle_vision
+
 services:
-  api:
+  aisle-vision-bff:
     build:
       context: ..
       dockerfile: Dockerfile
+    image: aisle_vision_api:latest
     container_name: aisle_vision_api
     ports:
       - "3000:3000"
     volumes:
-      - ..:/app
+      - ../src:/app/src
       - /app/node_modules
     depends_on:
-      - db
+      - aisle-vision-db
     environment:
       DATABASE_URL: postgresql://aislevision:Dejavu1985@db:5432/avdb_dev
       NODE_ENV: "development"
     command: npm run start:dev
 
-  db:
+  aisle-vision-db:
     image: postgres:16
-    container_name: aislevision_db
+    container_name: aisle_vision_db
     restart: always
     ports:
       - "5432:5432"

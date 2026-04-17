@@ -1,19 +1,21 @@
+name: aisle_vision
 services:
-  api:
+  aisle-vision-bff:
     build:
       context: ..
       dockerfile: Dockerfile
+    image: aisle_vision_api:latest
     container_name: aisle_vision_api_hml
     ports:
       - "3001:3000"
     depends_on:
-      - db
+      - aisle-vision-db
     environment:
       NODE_ENV: staging
       DATABASE_URL: postgresql://aislevision:Dejavu1985@db:5432/avdb_hml
     command: node dist/main
 
-  db:
+  aisle-vision-db:
     image: postgres:16
     container_name: aisle_vision_db_hml
     restart: always
