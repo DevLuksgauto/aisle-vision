@@ -1,37 +1,21 @@
-# Estágio 1: Build
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Copiar arquivos de dependência
-COPY package*.json ./
-COPY prisma ./prisma/
-
-# Instalar dependências (incluindo dev)
-RUN npm ci
-
-# Copiar código fonte
-COPY . .
-
-# Build da aplicação
-RUN npm run build
-
-# Gerar Prisma Client
-RUN npx prisma generate
-
-# Estágio 2: Produção
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copiar apenas o necessário do estágio builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/prisma ./prisma
+# Copiar arquivos necessários
+COPY package*.json ./
+COPY prisma ./prisma/
+COPY prisma.config.ts ./
+COPY dist ./dist
+COPY tsconfig.json ./
+COPY nest-cli.json ./
 
-# Expor porta
+# Instalar dependências
+RUN npm install
+
+# Gerar Prisma Client
+RUN npx prisma generate
+
 EXPOSE 3000
 
-# Comando para rodar
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "start:dev"]

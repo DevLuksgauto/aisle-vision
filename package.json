@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "npx nest build",
     "format": "biome format . --write",
     "lint": "biome lint .",
     "check": "biome check .",
@@ -24,7 +24,13 @@
     "docker:hml": "docker-compose -f docker/docker-compose.hml.yml up -d",
     "docker:hml:down": "docker-compose -f docker/docker-compose.hml.yml down",
     "docker:prod": "docker-compose -f docker/docker-compose.prod.yml up -d",
-    "docker:prod:down": "docker-compose -f docker/docker-compose.prod.yml down"
+    "docker:prod:down": "docker-compose -f docker/docker-compose.prod.yml down",
+    "prisma:dev": "dotenv -e .env.dev -- npx prisma migrate dev",
+    "prisma:hml": "dotenv -e .env.hml -- npx prisma migrate dev",
+    "prisma:prod": "dotenv -e .env.prod -- npx prisma migrate dev",
+    "studio:dev": "dotenv -e .env.dev -- npx prisma studio",
+    "studio:hml": "dotenv -e .env.hml -- npx prisma studio",
+    "studio:prod": "dotenv -e .env.prod -- npx prisma studio"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.19",
@@ -39,6 +45,7 @@
     "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "helmet": "^8.1.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -62,6 +69,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/supertest": "^7.0.0",
     "@types/uuid": "^10.0.0",
+    "dotenv-cli": "^11.0.0",
     "globals": "^17.0.0",
     "jest": "^30.3.0",
     "source-map-support": "^0.5.21",

@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,4 +5,106 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum NegotiationStatus {
+  pending
+  closed
+  lost
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+
+  clients   Client[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Client {
+  id              String   @id @default(uuid())
+  code            String   @unique
+  corporateName   String   // Nome da Empresa
+  fantasyName     String?  // Nome Fantasia
+  area            String?  // Área de atuação
+  collections     String?  // Coleções
+
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+
+  address         Address?
+  contacts        Contact[]
+  notes           Note[]
+  negotiations    Negotiation[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([code])
+  @@map("clients")
+}
+
+model Address {
+  id        String  @id @default(uuid())
+  street    String
+  district  String  // Bairro
+  city      String
+  state     String
+  zipCode   String
+
+  clientId  String  @unique
+  client    Client  @relation(fields: [clientId], references: [id])
+
+  @@map("addresses")
+}
+
+model Contact {
+  id        String  @id @default(uuid())
+  name      String
+  phone     String?
+  email     String?
+
+  clientId  String
+  client    Client  @relation(fields: [clientId], references: [id])
+
+  @@index([clientId])
+  @@map("contacts")
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  content   String
+
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientId])
+  @@map("notes")
+}
+
+model Negotiation {
+  id          String             @id @default(uuid())
+  description String?
+  status      NegotiationStatus  @default(pending)
+  value       Float?             @default(0)
+
+  clientId    String
+  client      Client             @relation(fields: [clientId], references: [id])
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([clientId])
+  @@index([status])
+  @@map("negotiations")
 }
