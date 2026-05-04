@@ -13,9 +13,9 @@ describe('JwtStrategy', () => {
 
   describe('validate', () => {
     it('should map payload sub/email to userId/email', async () => {
-      const payload = { sub: 'u1', email: 'alice@test.com' };
+      const payload = { sub: 'u1', email: 'luks@test.com' };
       const result = await strategy.validate(payload);
-      expect(result).toEqual({ userId: 'u1', email: 'alice@test.com' });
+      expect(result).toEqual({ userId: 'u1', email: 'luks@test.com' });
     });
   });
 });

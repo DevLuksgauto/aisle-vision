@@ -29,11 +29,11 @@ describe('AuthController', () => {
   describe('signup', () => {
     it('should return the result from authService.signup', async () => {
       const dto = {
-        name: 'Alice',
-        email: 'alice@test.com',
+        name: 'Luks',
+        email: 'Luks@test.com',
         password: 'secret123',
       };
-      const result = { id: 'u1', name: 'Alice', email: 'alice@test.com' };
+      const result = { id: 'u1', name: 'Luks', email: 'luks@test.com' };
       (authService.signup as jest.Mock).mockResolvedValue(result);
 
       expect(await controller.signup(dto)).toEqual(result);
@@ -43,7 +43,7 @@ describe('AuthController', () => {
 
   describe('login', () => {
     it('should return the result from authService.login', async () => {
-      const dto = { email: 'alice@test.com', password: 'secret123' };
+      const dto = { email: 'luks@test.com', password: 'secret123' };
       const result = { access_token: 'jwt' };
       (authService.login as jest.Mock).mockResolvedValue(result);
 

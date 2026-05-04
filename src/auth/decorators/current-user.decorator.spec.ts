@@ -20,7 +20,7 @@ function getDecoratorFactory(
 describe('CurrentUser', () => {
   it('should extract user from the HTTP request context', () => {
     const factory = getDecoratorFactory(CurrentUser);
-    const user = { userId: 'u1', email: 'alice@test.com' };
+    const user = { userId: 'u1', email: 'luks@test.com' };
     const ctx = {
       switchToHttp: jest.fn().mockReturnValue({
         getRequest: jest.fn().mockReturnValue({ user }),

@@ -15,8 +15,8 @@ describe('UsersService', () => {
 
   const publicUser = {
     id: 'u1',
-    name: 'Alice',
-    email: 'alice@test.com',
+    name: 'Luks',
+    email: 'luks@test.com',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -38,8 +38,8 @@ describe('UsersService', () => {
   describe('create', () => {
     it('should call prisma.user.create and return result', async () => {
       const dto = {
-        name: 'Alice',
-        email: 'alice@test.com',
+        name: 'Luks',
+        email: 'luks@test.com',
         password: 'hashed',
       };
       prisma.user.create.mockResolvedValue(publicUser);
@@ -59,10 +59,10 @@ describe('UsersService', () => {
       const user = { ...publicUser, password: 'hash' };
       prisma.user.findUnique.mockResolvedValue(user);
 
-      const result = await service.findAuthUser('alice@test.com');
+      const result = await service.findAuthUser('luks@test.com');
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        where: { email: 'alice@test.com' },
+        where: { email: 'luks@test.com' },
       });
       expect(result).toEqual(user);
     });

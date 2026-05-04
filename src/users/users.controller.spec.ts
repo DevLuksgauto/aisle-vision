@@ -9,8 +9,8 @@ describe('UsersController', () => {
 
   const publicUser = {
     id: 'u1',
-    name: 'Alice',
-    email: 'alice@test.com',
+    name: 'Luks',
+    email: 'luks@test.com',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -39,8 +39,8 @@ describe('UsersController', () => {
   describe('create', () => {
     it('should delegate to usersService.create', async () => {
       const dto = {
-        name: 'Alice',
-        email: 'alice@test.com',
+        name: 'Luks',
+        email: 'luks@test.com',
         password: 'pass123',
       };
       usersService.create.mockResolvedValue(publicUser);

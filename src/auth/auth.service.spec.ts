@@ -44,12 +44,12 @@ describe('AuthService', () => {
   describe('signup', () => {
     it('should hash the password and delegate to usersService.create', async () => {
       const dto = {
-        name: 'Alice',
-        email: 'alice@test.com',
+        name: 'Luks',
+        email: 'luks@test.com',
         password: 'secret123',
       };
       const hashed = 'hashed_secret';
-      const created = { id: 'u1', name: 'Alice', email: 'alice@test.com' };
+      const created = { id: 'u1', name: 'Luks', email: 'luks@test.com' };
 
       jest.spyOn(bcrypt, 'hash').mockResolvedValue(hashed as never);
       usersService.create.mockResolvedValue(created as any);
@@ -70,37 +70,37 @@ describe('AuthService', () => {
       usersService.findAuthUser.mockResolvedValue(null);
 
       await expect(
-        service.login({ email: 'alice@test.com', password: 'pass' }),
+        service.login({ email: 'luks@test.com', password: 'pass' }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw UnauthorizedException when password does not match', async () => {
       usersService.findAuthUser.mockResolvedValue({
         id: 'u1',
-        email: 'alice@test.com',
+        email: 'luks@test.com',
         password: 'hash',
       } as any);
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never);
 
       await expect(
-        service.login({ email: 'alice@test.com', password: 'wrong' }),
+        service.login({ email: 'luks@test.com', password: 'wrong' }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return access_token on valid credentials', async () => {
-      const user = { id: 'u1', email: 'alice@test.com', password: 'hash' };
+      const user = { id: 'u1', email: 'luks@test.com', password: 'hash' };
       usersService.findAuthUser.mockResolvedValue(user as any);
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
       jwtService.signAsync.mockResolvedValue('token123' as any);
 
       const result = await service.login({
-        email: 'alice@test.com',
+        email: 'luks@test.com',
         password: 'pass',
       });
 
       expect(jwtService.signAsync).toHaveBeenCalledWith({
         sub: 'u1',
-        email: 'alice@test.com',
+        email: 'luks@test.com',
       });
       expect(result).toEqual({ access_token: 'token123' });
     });
